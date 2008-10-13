@@ -19,6 +19,7 @@ module Ultrasphinx
         request.instance_eval do          
           @server = Ultrasphinx::CLIENT_SETTINGS['server_host']
           @port = Ultrasphinx::CLIENT_SETTINGS['server_port']          
+          @connector = Ultrasphinx::DaemonControllerConnector.new
           @match_mode = :extended # Force extended query mode
           @offset = opts['per_page'] * (opts['page'] - 1)
           @limit = opts['per_page']

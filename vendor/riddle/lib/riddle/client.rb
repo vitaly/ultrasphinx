@@ -106,9 +106,10 @@ module Riddle
     # Can instantiate with a specific server and port - otherwise it assumes
     # defaults of localhost and 3312 respectively. All other settings can be
     # accessed and changed via the attribute accessors.
-    def initialize(server=nil, port=nil)
+    def initialize(server=nil, port=nil, connector=nil)
       @server = server || "localhost"
       @port   = port   || 3312
+      @connector = connector
       
       # defaults
       @offset         = 0
@@ -384,7 +385,7 @@ module Riddle
     # Connects to the Sphinx daemon, and yields a socket to use. The socket is
     # closed at the end of the block.
     def connect(&block)
-      socket = TCPSocket.new @server, @port
+      socket = @connector ? @connector.connect : TCPSocket.new(@server, @port)
       
       # Checking version
       version = socket.recv(4).unpack('N*').first
